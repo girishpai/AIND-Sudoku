@@ -3,12 +3,30 @@
 
 # Question 1 (Naked Twins)
 Q: How do we use constraint propagation to solve the naked twins problem?  
-A: *Student should provide answer here*
+A: 1) First step is to find if 2 boxes in a unit have exactly the same pair of digits as values. Copying a snippet from the code. 
+    pairs = [s + t for s in  digits for t in digits if s!=t]
+    
+    for unit in unitlist:
+        for pair in pairs:
+            dplaces = [box for box in unit if values[box] == pair]
+            if len(dplaces) == 2:
+                boxes_to_replace = [box_temp for box_temp in unit if box_temp not in dplaces] ---> This holds the boxes with naked twins
+		
+   2) Once we find that, we go through all the remaining boxes in the unit, and remove both the digits if present - thus propagating the constraint.  Again following is the code snippet :
+   boxes_to_replace = [box_temp for box_temp in unit if box_temp not in dplaces]
+   for box_temp in boxes_to_replace :
+         value = values[box_temp]
+         values[box_temp] = ''.join(temp for temp in value if temp not in pair) --> Remove digits in other boxes part of the twins. 
 
 # Question 2 (Diagonal Sudoku)
 Q: How do we use constraint propagation to solve the diagonal sudoku problem?  
-A: *Student should provide answer here*
+A: 1) Create a separate data structure (list of list) for holding the 2 diagonal units - each diagonal unit has 9 boxes.
+   diag_units = []
+   diag_units.append([rows[i]+cols[i] for i in range(0,len(rows))])
+   diag_units.append([rows[::-1][j]+cols[j] for j in range(0,len(rows))])
 
+   2) For each of the 2 diagonal unit, use elimination, only_choice and naked_twins technique to figure out constraints for each boxes and propagate to whole unit. 
+      
 ### Install
 
 This project requires **Python 3**.
